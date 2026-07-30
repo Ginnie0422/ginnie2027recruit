@@ -6853,6 +6853,10 @@
       return deadline ? deadline < new Date() : false;
     }
 
+    function isPendingAction(job) {
+      return job.stage === "todo" && !job.done;
+    }
+
     function filteredJobs() {
       const search = document.querySelector("#search").value.trim().toLowerCase();
       const stage = document.querySelector("#stageFilter").value;
@@ -6927,7 +6931,7 @@
       const selectedJobs = jobs.filter(job => job.selected);
       const activeSelectedJobs = activeJobs.filter(job => job.selected);
       document.querySelector("#totalJobs").textContent = activeJobs.length;
-      document.querySelector("#actionJobs").textContent = activeSelectedJobs.filter(job => !job.done && !["rejected", "withdrawn"].includes(job.stage)).length;
+      document.querySelector("#actionJobs").textContent = activeSelectedJobs.filter(isPendingAction).length;
       document.querySelector("#discardedJobs").textContent = jobs.filter(job => job.discarded).length;
       document.querySelector("#metricTodo").textContent = activeSelectedJobs.filter(job => job.stage === "todo").length;
       document.querySelector("#metricApplied").textContent = activeSelectedJobs.filter(job => job.stage === "applied").length;
@@ -7115,14 +7119,15 @@
 
     function render() {
       const jobs = filteredJobs();
+      const actionJobs = jobs.filter(isPendingAction);
       const poolJobs = filteredPoolJobs();
       const discardedJobs = filteredDiscardedJobs();
       renderStats();
       renderPool(poolJobs);
       renderDiscarded(discardedJobs);
       renderBoard(jobs);
-      renderList(jobs, "#listView");
-      const focusJobs = jobs.filter(job => job.todayPriority && job.stage === "todo" && !job.done).slice(0, 12);
+      renderList(actionJobs, "#listView");
+      const focusJobs = actionJobs.filter(job => job.todayPriority).slice(0, 12);
       renderList(focusJobs, "#focusView");
       bindPoolRows();
       bindPoolSegments();

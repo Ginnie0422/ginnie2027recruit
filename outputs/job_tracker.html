@@ -556,18 +556,18 @@
       <div class="tabs" role="tablist">
         <button class="tab" data-view="pool" role="tab">优选池</button>
         <button class="tab active" data-view="board" role="tab">看板</button>
-        <button class="tab" data-view="list" role="tab">列表</button>
+        <button class="tab" data-view="list" role="tab">待动作</button>
         <button class="tab" data-view="focus" role="tab">今日优先</button>
         <button class="tab" data-view="discarded" role="tab">弃池</button>
       </div>
 
       <section id="poolView" class="pool hidden" aria-label="优选岗位池"></section>
       <section id="boardView" class="board" aria-label="投递阶段看板"></section>
-      <section id="listView" class="list hidden" aria-label="岗位列表"></section>
+      <section id="listView" class="list hidden" aria-label="待动作岗位"></section>
       <section id="focusView" class="list hidden" aria-label="今日优先岗位"></section>
       <section id="discardedView" class="pool hidden" aria-label="弃池岗位"></section>
 
-      <p class="footer-note">进度自动保存在当前浏览器。每日自动化会把新增匹配岗位写入优选池，刷新后会合并新岗位；只有你加入待动作的岗位才进入看板，并且不会覆盖你已记录的阶段、备注和下一步动作。</p>
+      <p class="footer-note">进度自动保存在当前浏览器。每日自动化会把新增匹配岗位写入优选池，刷新后会合并新岗位；只有你标为待动作的岗位才进入看板，并且不会覆盖你已记录的阶段、备注和下一步动作。</p>
     </main>
   </div>
 
@@ -6857,6 +6857,10 @@
       return job.stage === "todo" && !job.done;
     }
 
+    function isInPool(job) {
+      return !isExpired(job) && !job.discarded && !job.selected && !job.todayPriority;
+    }
+
     function filteredJobs() {
       const search = document.querySelector("#search").value.trim().toLowerCase();
       const stage = document.querySelector("#stageFilter").value;
@@ -6880,8 +6884,7 @@
       const sort = document.querySelector("#sortMode").value;
       let jobs = state.jobs.filter(job => {
         const text = `${job.company} ${job.role} ${job.location} ${job.reason} ${job.notes}`.toLowerCase();
-        return !isExpired(job) &&
-          !job.discarded &&
+        return isInPool(job) &&
           (!search || text.includes(search)) &&
           priorityMatches(job, activePoolTier);
       });
@@ -6997,15 +7000,13 @@
     }
 
     function poolRow(job) {
-      const canPrioritizeToday = job.selected && job.stage === "todo" && !job.done;
       return `
         <tr data-id="${job.id}">
           <td>
             <strong>${escapeHtml(job.company)}</strong>
             <div class="meta">
               <span class="pill priority-${job.priority}">${priorityLabel(job.priority)}</span>
-              ${job.selected ? `<span class="pill">已在待动作</span>` : `<span class="pill">优选池</span>`}
-              ${canPrioritizeToday && job.todayPriority ? `<span class="pill">今日优先</span>` : ""}
+              <span class="pill">优选池</span>
             </div>
           </td>
           <td>${escapeHtml(job.role)}</td>
@@ -7015,11 +7016,11 @@
           <td><a href="${job.url}" target="_blank" rel="noreferrer">打开</a></td>
           <td>
             <div class="pool-buttons">
-              <button class="pool-action ${job.selected ? "added" : ""}" type="button">
-                ${job.selected ? "移出待动作" : "加入待动作"}
+              <button class="pool-action" type="button">
+                待动作
               </button>
-              <button class="pool-priority ${canPrioritizeToday && job.todayPriority ? "added" : ""}" type="button" ${canPrioritizeToday ? "" : "disabled"}>
-                ${canPrioritizeToday ? (job.todayPriority ? "取消优先" : "今日优先") : "已跟进"}
+              <button class="pool-priority" type="button">
+                今日优先
               </button>
               <button class="pool-discard" type="button">放入弃池</button>
             </div>
@@ -7029,11 +7030,12 @@
     }
 
     function renderPool(jobs) {
-      const visibleJobs = state.jobs.filter(job => !isExpired(job) && !job.discarded);
-      const selectedCount = visibleJobs.filter(job => job.selected).length;
+      const visibleJobs = state.jobs.filter(isInPool);
       const highCount = visibleJobs.filter(job => ["high", "sprint"].includes(job.priority)).length;
       const backupCount = visibleJobs.filter(job => job.priority === "normal").length;
       const lowCount = visibleJobs.filter(job => job.priority === "low").length;
+      const activeJobs = state.jobs.filter(job => !isExpired(job) && !job.discarded);
+      const actionCount = activeJobs.filter(job => job.selected).length;
       const pool = document.querySelector("#poolView");
       pool.innerHTML = `
         <div class="pool-head">
@@ -7041,7 +7043,7 @@
             <strong>优选岗位表格</strong>
             <span>从 ${visibleJobs.length} 个匹配岗位里选择要跟进的目标：高匹配 ${highCount} / 可投备选 ${backupCount} / 低意向备查 ${lowCount}</span>
           </div>
-          <span>已加入待动作 ${selectedCount}</span>
+          <span>已移出优选池 ${actionCount}</span>
         </div>
         <div class="table-wrap">
           <div class="pool-segments" aria-label="优选池类型筛选">
@@ -7083,7 +7085,7 @@
           <td>
             <div class="pool-buttons">
               <button class="discard-restore" type="button">移回优选池</button>
-              <button class="discard-select" type="button">加入待动作</button>
+              <button class="discard-select" type="button">待动作</button>
             </div>
           </td>
         </tr>
@@ -7099,7 +7101,7 @@
             <strong>弃池</strong>
             <span>${discarded.length} 个暂不合适岗位，可最后复查补投</span>
           </div>
-          <span>可移回优选池或直接加入待动作</span>
+          <span>可移回优选池或标为待动作</span>
         </div>
         <div class="table-wrap">
           <table>
@@ -7182,10 +7184,9 @@
         button.addEventListener("click", event => {
           const row = event.target.closest("tr");
           const job = state.jobs.find(item => item.id === row.dataset.id);
-          job.selected = !job.selected;
+          job.selected = true;
           if (job.selected && !job.stage) job.stage = "todo";
           if (job.selected && ["rejected", "withdrawn"].includes(job.stage)) job.stage = "todo";
-          if (!job.selected) job.todayPriority = false;
           job.updatedAt = today();
           saveState();
           render();
@@ -7195,17 +7196,9 @@
         button.addEventListener("click", event => {
           const row = event.target.closest("tr");
           const job = state.jobs.find(item => item.id === row.dataset.id);
-          if (!job.selected || job.stage !== "todo" || job.done) {
-            job.todayPriority = false;
-            saveState();
-            render();
-            return;
-          }
-          job.todayPriority = !job.todayPriority;
-          if (job.todayPriority) {
-            job.selected = true;
-            if (!job.stage || ["rejected", "withdrawn"].includes(job.stage)) job.stage = "todo";
-          }
+          job.selected = true;
+          job.todayPriority = true;
+          if (!job.stage || ["rejected", "withdrawn"].includes(job.stage)) job.stage = "todo";
           job.updatedAt = today();
           saveState();
           render();

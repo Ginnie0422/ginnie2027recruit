@@ -219,7 +219,7 @@
 
     .board {
       display: grid;
-      grid-template-columns: repeat(4, minmax(230px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 12px;
       align-items: start;
     }
@@ -7216,7 +7216,7 @@
     }
 
     function renderBoard(jobs) {
-      const boardStages = ["todo", "applied", "assessment", "interview1"];
+      const boardStages = ["todo", "applied", "assessment", "interview1", "rejected", "withdrawn"];
       const board = document.querySelector("#boardView");
       board.innerHTML = boardStages.map(stageId => {
         const stageJobs = jobs.filter(job => {

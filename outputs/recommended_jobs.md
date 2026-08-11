@@ -51,6 +51,19 @@
 
 - [ ] 联想｜技术方向 产品与销售方向 供应链方向 设计方向 职能方向｜北京 天津 深圳 上海 武汉 成都 合肥 苏州 重庆 杭州 济南 哈尔滨｜包含产品与销售方向，适合作为可投备选；需在官网细分筛选产品、市场、运营、销售相关岗位｜[投递链接](https://talent.lenovo.com.cn/campus)
 
+## 2026-08-11 实时同步新增候选
+
+- [ ] 博西家电｜市场类、销售类、技术研发类、生产运营类、商务行政管理｜南京/滁州｜外企家电消费品，市场/销售/生产运营/商务行政方向，匹配市场营销与运营画像｜[投递链接](https://app.mokahr.com/social-recruitment/bshg/140686?locale=zh-CN&sessionid=#/jobs?page=1&anchorName=jobsList&commitment%5B0%5D=%E5%AE%9E%E4%B9%A0)
+- [ ] 汇丰前海证券｜管理培训生项目｜全国｜金融管培项目，匹配经济学背景、英语能力、商业分析和跨文化沟通能力｜[投递链接](https://www.hsbc.com/careers/students-and-graduates/find-a-programme?area-of-interest=investment-banking&page=1&take=20&location=mainland-china&sessionid=)
+- [ ] 散爆网络｜程序设计类、产品策划类、美术表现类、市场运营类、质量管理类｜待确认｜游戏产品策划与市场运营方向，匹配产品运营、内容/用户运营和项目协同经历｜[投递链接](https://jobs.sunborngame.com/campus-recruitment/micateam/146166#/jobs)
+- [ ] 松下集团｜研发技术、信息技术、制造技术、销售与市场、经营企划管理、职能、供应链等｜广州/大连/苏州/长春/无锡｜销售与市场、经营企划管理方向可投，适合市场营销硕士与项目协同背景｜[投递链接](https://app.mokahr.com/campus-recruitment/panasonic/41989?locale=zh-CN#/)
+- [ ] 华金证券｜投行承做类、投资研究类、卖方研究类、市场营销类、销售交易类、运营支持类｜待确认｜金融机构中含市场营销、销售交易和运营支持方向，匹配经济学和市场研究背景｜[投递链接](https://wecruit.hotjob.cn/SU6407e1620dcad470d9ae9633/pb/school.html)
+- [ ] 群核科技｜市场运营实习生、商机运营实习生、KA客户成功顾问实习生、模型运营/行业运营/实施实习生等｜杭州/广州｜SaaS/客户成功/商机运营方向，匹配Zilliz生态营销、BD和产品运营经历｜[投递链接](https://app.mokahr.com/campus_apply/qunhemail/2832#/jobs?zhineng=165367&page=1)
+- [ ] 金证股份｜软件研发类、技术支持类、市场营销类、质量管理类｜深圳/上海/长沙｜金融科技公司含市场营销和技术支持方向，可作为金融科技市场/运营备选｜[投递链接](https://szkingdom.zhiye.com/campus/jobs)
+- [ ] 正略集团｜短期实习分析师（寒暑假实习生）｜北京/上海/广州｜咨询分析师方向，匹配市场研究、商业分析和经济学背景｜[投递链接](https://wecruit.hotjob.cn/SU640192b0bef57c71d90d025a/pb/posDetail.html?postId=69087fc4ba375d797cec1651&postType=intern)
+- [ ] 贝恩公司大中华区｜Associate Consultant Intern（暑期助理顾问实习生）｜北京/上海/香港｜顶级咨询实习，匹配商业分析、市场研究、英文沟通和跨项目协作能力｜[投递链接](https://mp.weixin.qq.com/s/NbUskLy9QGqTdqSUCXVm7Ah)
+- [ ] 渣打中国｜实习生计划｜上海/北京/深圳｜外资金融机构实习项目，匹配英语能力、经济金融背景和客户/业务理解能力｜[投递链接](https://www.sc.com/en/global-careers/early-careers/?utm_source=wechat&utm_medium=general&utm_campaign=early%20careers)
+
 ## 自动化运行记录
 
 - 2026-07-29：已建立初始清单。后续每天 09:30 追加新匹配岗位，并保留已勾选状态。
@@ -63,3 +76,4 @@
 - 2026-08-08：抓取 2027届校招信息汇总表 2336 行；新增优选池 0 个；当前种子岗位 436 个：高匹配 96、可投备选 130、低意向备查 210；Markdown 清单未勾选 35 个。
 - 2026-08-10：抓取 2027届校招信息汇总表 2360 行；新增优选池 0 个；当前种子岗位 436 个：高匹配 96、可投备选 130、低意向备查 210；Markdown 清单未勾选 35 个。
 - 2026-08-11：抓取 2027届校招信息汇总表 2401 行；新增优选池 0 个；当前种子岗位 436 个：高匹配 96、可投备选 130、低意向备查 210；Markdown 清单未勾选 35 个。
+- 2026-08-11：实时抓取腾讯文档 2401 行；安全复核新增候选 10 个，并为 6 个既有候选补充/更新直达投递链接。

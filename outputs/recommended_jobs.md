@@ -60,9 +60,6 @@
 - [ ] 华金证券｜投行承做类、投资研究类、卖方研究类、市场营销类、销售交易类、运营支持类｜待确认｜金融机构中含市场营销、销售交易和运营支持方向，匹配经济学和市场研究背景｜[投递链接](https://wecruit.hotjob.cn/SU6407e1620dcad470d9ae9633/pb/school.html)
 - [ ] 群核科技｜市场运营实习生、商机运营实习生、KA客户成功顾问实习生、模型运营/行业运营/实施实习生等｜杭州/广州｜SaaS/客户成功/商机运营方向，匹配Zilliz生态营销、BD和产品运营经历｜[投递链接](https://app.mokahr.com/campus_apply/qunhemail/2832#/jobs?zhineng=165367&page=1)
 - [ ] 金证股份｜软件研发类、技术支持类、市场营销类、质量管理类｜深圳/上海/长沙｜金融科技公司含市场营销和技术支持方向，可作为金融科技市场/运营备选｜[投递链接](https://szkingdom.zhiye.com/campus/jobs)
-- [ ] 正略集团｜短期实习分析师（寒暑假实习生）｜北京/上海/广州｜咨询分析师方向，匹配市场研究、商业分析和经济学背景｜[投递链接](https://wecruit.hotjob.cn/SU640192b0bef57c71d90d025a/pb/posDetail.html?postId=69087fc4ba375d797cec1651&postType=intern)
-- [ ] 贝恩公司大中华区｜Associate Consultant Intern（暑期助理顾问实习生）｜北京/上海/香港｜顶级咨询实习，匹配商业分析、市场研究、英文沟通和跨项目协作能力｜[投递链接](https://mp.weixin.qq.com/s/NbUskLy9QGqTdqSUCXVm7Ah)
-- [ ] 渣打中国｜实习生计划｜上海/北京/深圳｜外资金融机构实习项目，匹配英语能力、经济金融背景和客户/业务理解能力｜[投递链接](https://www.sc.com/en/global-careers/early-careers/?utm_source=wechat&utm_medium=general&utm_campaign=early%20careers)
 
 ## 自动化运行记录
 

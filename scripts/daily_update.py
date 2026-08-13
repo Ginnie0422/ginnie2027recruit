@@ -71,11 +71,21 @@ TECH_HEAVY = [
     "算法", "研发", "硬件", "芯片", "嵌入式", "机械", "电气", "工艺",
     "后端", "前端", "测试工程师", "材料", "结构", "量化开发",
 ]
-EXCLUDE_ONLY = ["开放日", "宣讲会", "空中宣讲", "暑期实习", "日常实习"]
+EXCLUDE_ONLY = ["开放日", "宣讲会", "空中宣讲", "暑期实习", "寒暑假实习", "暑期助理顾问实习生", "Summer Intern", "Summer Internship"]
 CITY_WORDS = [
     "北京", "上海", "深圳", "广州", "杭州", "南京", "苏州", "成都", "武汉", "西安",
     "重庆", "天津", "厦门", "青岛", "佛山", "合肥", "昆山", "固安", "香港", "海外",
     "全国", "长沙", "宁波", "无锡", "福州", "珠海", "东莞", "郑州", "济南",
+]
+COMPANY_NOISE_SUFFIXES = [
+    "免费", "班车", "住宿", "食宿", "三餐", "公寓", "薪资", "薪酬", "福利", "代租",
+    "实习", "岗位", "计划", "项目", "通道", "专场", "中心", "分校", "部门", "营销服",
+    "校招", "秋招", "春招", "早鸟", "管培", "培训生", "Intern", "intern",
+]
+BAD_COMPANY_MARKERS = [
+    "投递", "报名", "查看", "点击", "官方公告", "内推", "公众号", "链接", "网址", "扫码",
+    "选择Internship", "实习生计划", "寒暑假实习", "暑期实习", "暑期助理", "Summer Intern",
+    "Summer Internship",
 ]
 
 
@@ -165,6 +175,8 @@ def fetch_opendocs(use_cache: bool) -> tuple[list[dict], dict]:
         files = sorted(WORK_DIR.glob("current_opendoc_*.js"))
         if not files:
             files = sorted(WORK_DIR.glob("daily2_opendoc_*.js"))
+        if not files:
+            files = sorted(WORK_DIR.glob("opendoc_*.js"))
         docs = [parse_jsonp(path.read_text(encoding="utf-8")) for path in files]
         if not docs:
             raise RuntimeError("no cached opendoc files found")
@@ -307,6 +319,58 @@ def is_non_company(text: str) -> bool:
     return False
 
 
+def looks_company_like(text: str) -> bool:
+    text = clean_piece(text)
+    if not text or len(text) < 2 or len(text) > 80:
+        return False
+    if looks_like_date(text) or is_location(text):
+        return False
+    if any(marker.lower() in text.lower() for marker in BAD_COMPANY_MARKERS):
+        return False
+    return not is_non_company(text)
+
+
+def clean_company_name(text: str) -> str:
+    text = clean_piece(text)
+    text = text.lstrip("+-•·").strip()
+    if not text:
+        return ""
+
+    for sep in ["，", ",", "｜", "|", "、", "；", ";"]:
+        if sep in text:
+            left, right = text.split(sep, 1)
+            right_text = right.strip()
+            if left and looks_company_like(left) and (
+                any(marker.lower() in right_text.lower() for marker in COMPANY_NOISE_SUFFIXES)
+                or looks_like_date(right_text)
+                or is_location(right_text)
+            ):
+                text = left.strip()
+                break
+
+    if " " in text:
+        first, rest = text.split(" ", 1)
+        rest_text = rest.strip()
+        if first and looks_company_like(first) and (
+            any(marker.lower() in rest_text.lower() for marker in COMPANY_NOISE_SUFFIXES)
+            or looks_like_date(rest_text)
+            or is_location(rest_text)
+        ):
+            text = first.strip()
+
+    if "-" in text:
+        left, right = text.split("-", 1)
+        right_text = right.strip()
+        if left and looks_company_like(left) and (
+            any(marker.lower() in right_text.lower() for marker in COMPANY_NOISE_SUFFIXES)
+            or looks_like_date(right_text)
+            or is_location(right_text)
+        ):
+            text = left.strip()
+
+    return clean_piece(text)
+
+
 def is_industry_like(text: str) -> bool:
     industry_markers = ["互联网", "金融", "电子", "芯片", "汽车", "制造", "教育", "咨询", "能源", "医药", "游戏", "电商"]
     return "/" in text or any(item in text for item in industry_markers) and len(text) <= 120
@@ -354,7 +418,7 @@ def classify(company: str, role: str, context: str) -> tuple[str, str] | None:
 
 
 def make_id(company: str, role: str, url: str) -> str:
-    digest = hashlib.sha1(f"{company}|{role}|{url}".encode("utf-8")).hexdigest()[:10]
+    digest = hashlib.sha1(f"{company}|{role}".encode("utf-8")).hexdigest()[:10]
     return f"auto-{digest}"
 
 
@@ -380,7 +444,9 @@ def build_candidates(tokens: list[str], urls: list[str]) -> list[dict]:
         segment = tokens[start:end]
         if len(segment) < 2:
             continue
-        company = segment[0]
+        company = clean_company_name(segment[0])
+        if not looks_company_like(company):
+            continue
         role = ""
         location = ""
         deadline = ""
@@ -404,9 +470,8 @@ def build_candidates(tokens: list[str], urls: list[str]) -> list[dict]:
         if not classified:
             continue
         priority, reason = classified
-        url = nearest_url(urls, start)
-        if url == DOC_URL:
-            reason += "；需回原表核对链接"
+        url = DOC_URL
+        reason += "；需回原表核对链接"
         key = dedupe_key(company, role)
         if key in seen:
             continue

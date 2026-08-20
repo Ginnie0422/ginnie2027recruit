@@ -20,6 +20,7 @@ import re
 import subprocess
 import sys
 import time
+import unicodedata
 import urllib.parse
 import urllib.request
 import zlib
@@ -64,7 +65,7 @@ POSITIVE_HIGH = [
     "开发者生态", "解决方案", "生态合作", "TikTok", "电商营销",
 ]
 POSITIVE_NORMAL = [
-    "运营", "产品", "市场", "销售", "商务", "项目管理", "策划", "管培生",
+    "运营", "产品", "市场", "营销", "销售", "商务", "项目管理", "策划", "管培生",
     "数据分析", "行业研究", "投资研究", "客户", "交付", "企划",
 ]
 TECH_HEAVY = [
@@ -172,11 +173,19 @@ def opendoc_url(start_row: int, end_row: int, max_col: int) -> str:
 def fetch_opendocs(use_cache: bool) -> tuple[list[dict], dict]:
     WORK_DIR.mkdir(exist_ok=True)
     if use_cache:
-        files = sorted(WORK_DIR.glob("current_opendoc_*.js"))
+        dated: dict[str, list[Path]] = {}
+        for path in WORK_DIR.glob("opendoc_*.js"):
+            match = re.match(r"opendoc_(\d{4}-\d{2}-\d{2})_(\d+)_(\d+)\.js$", path.name)
+            if match:
+                dated.setdefault(match.group(1), []).append(path)
+        files = []
+        if dated:
+            latest_day = max(dated)
+            files = sorted(dated[latest_day], key=lambda path: int(path.name.rsplit("_", 2)[1]))
+        if not files:
+            files = sorted(WORK_DIR.glob("current_opendoc_*.js"))
         if not files:
             files = sorted(WORK_DIR.glob("daily2_opendoc_*.js"))
-        if not files:
-            files = sorted(WORK_DIR.glob("opendoc_*.js"))
         docs = [parse_jsonp(path.read_text(encoding="utf-8")) for path in files]
         if not docs:
             raise RuntimeError("no cached opendoc files found")
@@ -267,6 +276,57 @@ def extract_tokens_and_urls(docs: list[dict]) -> tuple[list[str], list[str]]:
                     if piece and not is_noise(piece) and re.search(r"[\u4e00-\u9fffA-Za-z0-9]", piece):
                         tokens.append(piece)
     return tokens, urls
+
+
+def load_previous_tokens(current_day: str) -> list[str]:
+    dated: dict[str, list[Path]] = {}
+    for path in WORK_DIR.glob("opendoc_*.js"):
+        match = re.match(r"opendoc_(\d{4}-\d{2}-\d{2})_(\d+)_(\d+)\.js$", path.name)
+        if match and match.group(1) < current_day:
+            dated.setdefault(match.group(1), []).append(path)
+    if not dated:
+        return []
+    previous_day = max(dated)
+    files = sorted(dated[previous_day], key=lambda path: int(path.name.rsplit("_", 2)[1]))
+    docs = [parse_jsonp(path.read_text(encoding="utf-8")) for path in files]
+    tokens, _ = extract_tokens_and_urls(docs)
+    return tokens
+
+
+def table_data_start(tokens: list[str]) -> int | None:
+    try:
+        header = tokens.index("公司名称")
+        return tokens.index("内推码/备注", header) + 1
+    except ValueError:
+        return None
+
+
+def new_table_tokens(tokens: list[str], previous_tokens: list[str]) -> list[str] | None:
+    current_start = table_data_start(tokens)
+    previous_start = table_data_start(previous_tokens)
+    if current_start is None or previous_start is None or previous_start >= len(previous_tokens):
+        return None
+    previous_first_company = previous_tokens[previous_start]
+    try:
+        previous_anchor = tokens.index(previous_first_company, current_start)
+    except ValueError:
+        return None
+    return tokens[current_start:previous_anchor]
+
+
+def latest_source_date(tokens: list[str]) -> str:
+    dates = []
+    for item in tokens:
+        match = re.search(r"(20\d{2})[./年-](\d{1,2})[./月-](\d{1,2})", item)
+        if not match:
+            continue
+        try:
+            value = dt.date(int(match.group(1)), int(match.group(2)), int(match.group(3)))
+        except ValueError:
+            continue
+        if value <= dt.date.today():
+            dates.append(value)
+    return max(dates).isoformat() if dates else today()
 
 
 def looks_like_date(text: str) -> bool:
@@ -396,16 +456,22 @@ def is_company_candidate(tokens: list[str], index: int) -> bool:
 
 
 def classify(company: str, role: str, context: str) -> tuple[str, str] | None:
-    text = f"{company} {role} {context}"
-    if any(word in text for word in EXCLUDE_ONLY):
+    text = f"{company} {role}"
+    if any(word in f"{text} {context}" for word in EXCLUDE_ONLY):
         return None
-    if "实习" in text and "秋招" not in text and "校招" not in text and "2027届" not in text:
+    if "实习" in text and "秋招" not in context and "校招" not in context and "2027届" not in context:
+        return None
+    if has_any(text, ["教师", "教学岗", "教研"]):
+        return None
+    if role.count("/") >= 5 and not has_any(role, ["岗位", "经理", "管培", "运营", "营销", "产品"]):
         return None
 
     high_hits = [word for word in POSITIVE_HIGH if word.lower() in text.lower()]
     normal_hits = [word for word in POSITIVE_NORMAL if word.lower() in text.lower()]
     tech_hits = [word for word in TECH_HEAVY if word.lower() in text.lower()]
 
+    if len(tech_hits) >= 2 and not high_hits and not normal_hits:
+        return None
     if len(high_hits) >= 2 or ("AI" in text and any(word in text for word in ["产品", "运营", "市场", "客户成功"])):
         return "high", "匹配 " + "、".join(high_hits[:4]) + "，适合优先检查"
     if high_hits or len(normal_hits) >= 2:
@@ -423,16 +489,39 @@ def make_id(company: str, role: str, url: str) -> str:
 
 
 def dedupe_key(company: str, role: str) -> str:
-    text = f"{company}|{role}"
-    text = re.sub(r"[；;。,.，、\s]+", "", text)
-    return text.lower()
+    normalized_company = unicodedata.normalize("NFKC", company).lower()
+    normalized_role = unicodedata.normalize("NFKC", role).lower()
+    normalized_company = re.sub(r"[\W_]+", "", normalized_company)
+    category_terms = [
+        "产品", "研发", "设计", "营销", "市场", "运营", "销售", "商务", "客户服务",
+        "供应链", "生产", "制造", "物流", "职能", "质量", "管理", "管培", "策划",
+    ]
+    category_hits = sorted({term for term in category_terms if term in normalized_role})
+    if len(category_hits) >= 3:
+        normalized_role = "分类:" + ",".join(category_hits)
+    normalized_role = re.sub(r"[\W_]+", "", normalized_role)
+    return f"{normalized_company}|{normalized_role}"
+
+
+def candidate_needs_review(company: str, role: str) -> bool:
+    tech_hits = [word for word in TECH_HEAVY if word.lower() in role.lower()]
+    positive_hits = [word for word in POSITIVE_HIGH + POSITIVE_NORMAL if word.lower() in role.lower()]
+    if len(role) > 70 and len(tech_hits) >= 2:
+        return True
+    if tech_hits and set(positive_hits).issubset({"销售"}):
+        return True
+    if "consult" in company.lower() and not has_any(role, ["咨询", "顾问", "猎头", "运营", "市场", "营销", "商务", "产品"]):
+        return True
+    if "具体见" in role or "投递方式链接" in role:
+        return True
+    return False
 
 
 def nearest_url(urls: list[str], index: int) -> str:
     return urls[index % len(urls)] if urls else DOC_URL
 
 
-def build_candidates(tokens: list[str], urls: list[str]) -> list[dict]:
+def build_candidates(tokens: list[str], urls: list[str], source_date: str | None = None) -> list[dict]:
     if "公司名称" in tokens:
         tokens = tokens[tokens.index("公司名称") + 1:]
 
@@ -464,6 +553,8 @@ def build_candidates(tokens: list[str], urls: list[str]) -> list[dict]:
                     break
         if not role:
             continue
+        if candidate_needs_review(company, role):
+            continue
         if is_expired(deadline):
             continue
         classified = classify(company, role, " ".join(segment))
@@ -484,7 +575,7 @@ def build_candidates(tokens: list[str], urls: list[str]) -> list[dict]:
             "priority": priority,
             "reason": reason[:120],
             "url": url,
-            "sourceDate": today(),
+            "sourceDate": source_date or today(),
             "deadline": deadline[:40],
             "selected": False,
             "todayPriority": False,
@@ -678,7 +769,15 @@ def main() -> int:
     log(f"fetched {len(docs)} opendoc blocks; max_row={meta.get('max_row')} max_col={meta.get('max_col')}")
     tokens, urls = extract_tokens_and_urls(docs)
     log(f"extracted {len(tokens)} text tokens and {len(urls)} urls")
-    candidates = build_candidates(tokens, urls)
+    previous_tokens = load_previous_tokens(today())
+    incremental_tokens = new_table_tokens(tokens, previous_tokens) if previous_tokens else None
+    if incremental_tokens is None:
+        candidates = build_candidates(tokens, urls)
+        log("no reliable previous-row anchor; parsed full table under safety threshold")
+    else:
+        source_date = latest_source_date(incremental_tokens)
+        candidates = build_candidates(incremental_tokens, urls, source_date=source_date)
+        log(f"isolated {len(incremental_tokens)} newly prepended table tokens; source_date={source_date}")
     log(f"built {len(candidates)} candidate jobs")
 
     html = JOB_TRACKER.read_text(encoding="utf-8")

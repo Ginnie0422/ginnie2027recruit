@@ -110,7 +110,7 @@
 
     .toolbar {
       display: grid;
-      grid-template-columns: minmax(240px, 1fr) 170px 170px 170px auto auto;
+      grid-template-columns: minmax(240px, 1fr) 170px 170px 170px auto auto auto;
       gap: 10px;
       align-items: center;
       margin-bottom: 16px;
@@ -153,6 +153,96 @@
       background: var(--green);
       border-color: var(--green);
       color: #fff;
+    }
+
+    dialog {
+      width: min(680px, calc(100vw - 28px));
+      max-height: calc(100vh - 40px);
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--text);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    dialog::backdrop {
+      background: rgba(18, 28, 38, 0.48);
+    }
+
+    .dialog-form {
+      display: grid;
+      max-height: calc(100vh - 40px);
+      overflow: auto;
+    }
+
+    .dialog-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 18px 20px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .dialog-head h2 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .dialog-head p {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .dialog-close {
+      width: 34px;
+      min-width: 34px;
+      height: 34px;
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .dialog-body {
+      display: grid;
+      gap: 14px;
+      padding: 18px 20px;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .field.full { grid-column: 1 / -1; }
+
+    .field label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #41505f;
+    }
+
+    .required { color: var(--red); }
+
+    .field-help {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .dialog-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 14px 20px 18px;
+      border-top: 1px solid var(--line);
     }
 
     button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
@@ -501,6 +591,9 @@
       .tabs { overflow-x: auto; }
       .card-actions { grid-template-columns: 1fr; }
       .pool-head { align-items: flex-start; flex-direction: column; }
+      .field-grid { grid-template-columns: 1fr; }
+      .field.full { grid-column: auto; }
+      .dialog-actions { display: grid; grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -544,8 +637,9 @@
           <option value="priority">按匹配优先</option>
           <option value="deadline">按截止时间</option>
         </select>
+        <button id="addJobBtn" class="primary" type="button">＋ 添加岗位</button>
         <button id="exportBtn" title="导出当前进度 JSON">导出</button>
-        <button id="importBtn" class="primary" title="导入之前导出的进度 JSON">导入</button>
+        <button id="importBtn" title="导入之前导出的进度 JSON">导入</button>
       </div>
 
       <div class="summary">
@@ -574,6 +668,82 @@
   </div>
 
   <input id="importFile" class="hidden" type="file" accept="application/json">
+
+  <dialog id="jobDialog" aria-labelledby="jobDialogTitle">
+    <form id="jobForm" class="dialog-form">
+      <div class="dialog-head">
+        <div>
+          <h2 id="jobDialogTitle">添加待投递岗位</h2>
+          <p>保存后直接进入看板的“待投递”栏。</p>
+        </div>
+        <button class="dialog-close" type="button" aria-label="关闭">×</button>
+      </div>
+      <div class="dialog-body">
+        <div class="field-grid">
+          <div class="field">
+            <label for="jobCompany">公司名称 <span class="required">*</span></label>
+            <input id="jobCompany" name="company" required maxlength="100" autocomplete="organization">
+          </div>
+          <div class="field">
+            <label for="jobRole">岗位名称 <span class="required">*</span></label>
+            <input id="jobRole" name="role" required maxlength="220">
+          </div>
+          <div class="field">
+            <label for="jobLocation">工作地点</label>
+            <input id="jobLocation" name="location" maxlength="120" placeholder="如：上海/深圳">
+          </div>
+          <div class="field">
+            <label for="jobPriority">匹配层级</label>
+            <select id="jobPriority" name="priority">
+              <option value="high">高匹配</option>
+              <option value="normal" selected>可投备选</option>
+              <option value="low">低意向备查</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="jobDeadline">截止时间</label>
+            <input id="jobDeadline" name="deadline" maxlength="40" placeholder="如：2026-09-30 或 招满即止">
+          </div>
+          <div class="field">
+            <label for="jobUrl">投递链接</label>
+            <input id="jobUrl" name="url" type="text" inputmode="url" placeholder="可稍后在打开投递中填写">
+          </div>
+          <div class="field full">
+            <label for="jobReason">备注 / 推荐理由</label>
+            <textarea id="jobReason" name="reason" maxlength="500" placeholder="如：产品运营方向，优先投递"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="dialog-actions">
+        <button class="dialog-cancel" type="button">取消</button>
+        <button class="primary" type="submit">添加到待投递</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="linkDialog" aria-labelledby="linkDialogTitle">
+    <form id="linkForm" class="dialog-form">
+      <div class="dialog-head">
+        <div>
+          <h2 id="linkDialogTitle">投递链接</h2>
+          <p id="linkDialogJob"></p>
+        </div>
+        <button class="dialog-close" type="button" aria-label="关闭">×</button>
+      </div>
+      <div class="dialog-body">
+        <div class="field">
+          <label for="applicationUrl">投递网址</label>
+          <input id="applicationUrl" name="url" type="text" inputmode="url" placeholder="https://...">
+          <span class="field-help">可以先保存，之后再回来修改；“打开链接”会同时保存当前输入。</span>
+        </div>
+      </div>
+      <div class="dialog-actions">
+        <button class="dialog-cancel" type="button">取消</button>
+        <button id="saveLinkBtn" type="submit">保存链接</button>
+        <button id="openLinkBtn" class="primary" type="button">打开链接</button>
+      </div>
+    </form>
+  </dialog>
 
   <script>
     const STORAGE_KEY = "jinyu-campus-job-tracker-v1";
@@ -6661,6 +6831,61 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     }
 
+    function normalizeUrl(value) {
+      const trimmed = String(value || "").trim();
+      if (!trimmed) return "";
+      const candidate = /^[a-z][a-z0-9+.-]*:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+      const parsed = new URL(candidate);
+      if (!['http:', 'https:'].includes(parsed.protocol)) {
+        throw new Error("只支持 http 或 https 链接");
+      }
+      return parsed.href;
+    }
+
+    function closeDialog(dialog) {
+      if (dialog.open) dialog.close();
+    }
+
+    function openJobDialog() {
+      const dialog = document.querySelector("#jobDialog");
+      document.querySelector("#jobForm").reset();
+      document.querySelector("#jobPriority").value = "normal";
+      dialog.showModal();
+      document.querySelector("#jobCompany").focus();
+    }
+
+    function openLinkDialog(job) {
+      const dialog = document.querySelector("#linkDialog");
+      dialog.dataset.jobId = job.id;
+      document.querySelector("#linkDialogJob").textContent = `${job.company}｜${job.role}`;
+      document.querySelector("#applicationUrl").value = job.url || "";
+      dialog.showModal();
+      document.querySelector("#applicationUrl").focus();
+    }
+
+    function saveLinkFromDialog(openAfterSave) {
+      const dialog = document.querySelector("#linkDialog");
+      const job = state.jobs.find(item => item.id === dialog.dataset.jobId);
+      if (!job) return;
+      let url = "";
+      try {
+        url = normalizeUrl(document.querySelector("#applicationUrl").value);
+      } catch (error) {
+        alert("请输入有效的投递链接，例如 https://company.com/jobs");
+        return;
+      }
+      if (openAfterSave && !url) {
+        alert("请先输入投递链接");
+        return;
+      }
+      job.url = url;
+      job.updatedAt = today();
+      saveState();
+      closeDialog(dialog);
+      render();
+      if (openAfterSave) window.open(url, "_blank", "noopener,noreferrer");
+    }
+
     function loadColumnWidths() {
       const saved = JSON.parse(localStorage.getItem(COLUMN_WIDTHS_KEY) || "null");
       if (!Array.isArray(saved) || saved.length !== DEFAULT_COLUMN_WIDTHS.length) {
@@ -6850,7 +7075,7 @@
             <select class="stage-select" aria-label="更新进度">${stageOptions}</select>
             <button class="today-toggle" type="button" ${canPrioritizeToday ? "" : "disabled"}>${canPrioritizeToday ? (job.todayPriority ? "取消今日优先" : "今日优先") : "已跟进"}</button>
             <button class="card-discard" type="button">放入弃池</button>
-            <a href="${job.url}" target="_blank" rel="noreferrer"><button type="button">打开投递</button></a>
+            <button class="card-open" type="button">${job.url ? "打开投递" : "填写投递链接"}</button>
           </div>
           <div class="note-row">
             <input class="next-action" value="${escapeAttr(job.nextAction || "")}" placeholder="下一步：测评截止/面试时间">
@@ -6896,7 +7121,7 @@
           <td>${escapeHtml(job.location || "待确认")}</td>
           <td>${escapeHtml(job.deadline || "未标注")}</td>
           <td class="reason-cell">${escapeHtml(job.reason)}</td>
-          <td><a href="${job.url}" target="_blank" rel="noreferrer">打开</a></td>
+          <td>${job.url ? `<a href="${escapeAttr(job.url)}" target="_blank" rel="noreferrer">打开</a>` : "未填写"}</td>
           <td>
             <div class="pool-buttons">
               <button class="pool-action" type="button">
@@ -6964,7 +7189,7 @@
           <td>${escapeHtml(job.location || "待确认")}</td>
           <td>${escapeHtml(job.deadline || "未标注")}</td>
           <td class="reason-cell">${escapeHtml(job.reason)}</td>
-          <td><a href="${job.url}" target="_blank" rel="noreferrer">打开</a></td>
+          <td>${job.url ? `<a href="${escapeAttr(job.url)}" target="_blank" rel="noreferrer">打开</a>` : "未填写"}</td>
           <td>
             <div class="pool-buttons">
               <button class="discard-restore" type="button">移回优选池</button>
@@ -7168,6 +7393,7 @@
           saveState();
           render();
         });
+        card.querySelector(".card-open").addEventListener("click", () => openLinkDialog(job));
         card.querySelector(".next-action").addEventListener("input", event => {
           job.nextAction = event.target.value;
           job.updatedAt = today();
@@ -7292,6 +7518,63 @@
     });
     document.querySelector("#exportBtn").addEventListener("click", exportState);
     document.querySelector("#importBtn").addEventListener("click", () => document.querySelector("#importFile").click());
+    document.querySelector("#addJobBtn").addEventListener("click", openJobDialog);
+    document.querySelectorAll("dialog .dialog-close, dialog .dialog-cancel").forEach(button => {
+      button.addEventListener("click", () => closeDialog(button.closest("dialog")));
+    });
+    document.querySelectorAll("dialog").forEach(dialog => {
+      dialog.addEventListener("click", event => {
+        if (event.target === dialog) closeDialog(dialog);
+      });
+    });
+    document.querySelector("#jobForm").addEventListener("submit", event => {
+      event.preventDefault();
+      const data = new FormData(event.currentTarget);
+      const company = String(data.get("company") || "").trim();
+      const role = String(data.get("role") || "").trim();
+      if (!company || !role) return;
+      const duplicate = state.jobs.some(job =>
+        String(job.company || "").trim().toLowerCase() === company.toLowerCase() &&
+        String(job.role || "").trim().toLowerCase() === role.toLowerCase()
+      );
+      if (duplicate && !confirm("已有相同公司和岗位，仍然添加一条新记录吗？")) return;
+      let url = "";
+      try {
+        url = normalizeUrl(data.get("url"));
+      } catch (error) {
+        alert("请输入有效的投递链接，例如 https://company.com/jobs");
+        return;
+      }
+      const stamp = Date.now();
+      state.jobs.unshift({
+        id: `manual-${stamp}-${Math.random().toString(36).slice(2, 8)}`,
+        company,
+        role,
+        location: String(data.get("location") || "").trim(),
+        priority: String(data.get("priority") || "normal"),
+        reason: String(data.get("reason") || "").trim() || "手动添加岗位",
+        url,
+        sourceDate: today(),
+        deadline: String(data.get("deadline") || "").trim(),
+        selected: true,
+        todayPriority: false,
+        discarded: false,
+        stage: "todo",
+        done: false,
+        notes: "",
+        nextAction: "",
+        updatedAt: today()
+      });
+      saveState();
+      closeDialog(document.querySelector("#jobDialog"));
+      render();
+      setView("board");
+    });
+    document.querySelector("#linkForm").addEventListener("submit", event => {
+      event.preventDefault();
+      saveLinkFromDialog(false);
+    });
+    document.querySelector("#openLinkBtn").addEventListener("click", () => saveLinkFromDialog(true));
     document.querySelector("#importFile").addEventListener("change", event => {
       if (event.target.files[0]) importState(event.target.files[0]);
     });

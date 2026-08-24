@@ -102,44 +102,6 @@
 - [ ] 中际旭创｜通信运营/通信设备/网络通讯/5G/光纤光缆｜苏州 成都 铜陵 淮安 上海 北京 泰国 新加坡｜包含可迁移方向：运营；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
 - [ ] 数坤科技｜商业化方向 算法方向 开发方向 产品方向｜北京 上海将 浙江 广东 福建 江苏 四川 重庆 新疆 海外｜包含匹配方向：商业化、产品；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
 
-## 2026-08-24 新增优选
-
-- [ ] 广电运通集团｜算法类 软件类 硬件类 智能类 产品类 职能类 营销类 博士岗位｜)北京 沈阳 上海 苏州 广州 西安｜包含匹配方向：产品、营销；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 豪迈集团｜研发类 技术类 职能类 外语商务类 国内商务类；｜(潍坊 青岛 威海 日照 江苏启东｜包含可迁移方向：商务；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 恒立液压｜营销类 研发类 生产管理类 职能类；｜待确认｜包含可迁移方向：营销；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 杰瑞集团｜\博士岗 管培生岗位 技术研发类 市场开发类 产品交付类 职能与采购类｜北京 上海 深圳 成都 天津 烟台 海外｜包含匹配方向：管培、产品、市场、管培生；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 中颖电子｜数字电路设计 模拟电路设计 IC系统应用开发 IC销售工程师｜合肥 西安 上海 杭州 深圳｜包含可迁移方向：销售；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 九牧集团｜营销类 国际类 研发类 职能类 制造类；｜(上海 厦门 深圳 泉州南安 全国｜包含可迁移方向：营销；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 常宝股份｜冶金材料类 装备技术类 智能制造类 专业管理类 产品营销类；｜待确认｜包含匹配方向：产品、营销；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 广东惠州｜交易员 指数研究员 指数策略研究员 平台开发工程师 数据库系统工程师 数据应用开发工程师 AI框架工程师 AI数据工程师 AI评测工程师 AI应用开发工程师 AI产品经理 FDE前沿部署工程师｜深圳 北京 上海｜匹配 AI产品、产品经理，适合优先检查；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 清微智能｜芯片研发类 AI软件研发&算法类 软件研发类 硬件系统类 测试类 产品解决方案类｜北京 上海 深圳 杭州 成都｜匹配 解决方案，适合优先检查；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 砺星｜业务岗 全球业务岗 研发岗 运营岗 管培生｜上海 无锡 常州｜包含匹配方向：管培、运营、管培生；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] &3D场景培训生｜软件研发 硬件研发 商业分析 智驾算法 应用算法 产品经理 线上运营 运营管培生 设计类 AI 全栈工程师｜上海 杭州 北京 广州 深圳 成都 昆明 长沙 西安｜匹配 产品经理、管培、商业分析，适合优先检查；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 易思维｜=研发类 产品方案类 支持类 职能类 子公司岗位｜杭州 全国｜包含可迁移方向：产品；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 顾家家居｜设计类 信息技术类 研发技术类 营销类 用户服务类 制造技术类 职能支持类｜)杭州 东莞 黄冈 衡水 全国 海外｜包含可迁移方向：营销；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 图达通｜研发类 制造中心 运营类 职能支持类；｜苏州 上海 德清 平湖｜包含可迁移方向：运营；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 壁虎科技｜技术研发类 生产制造类 营销业务类 职能支持类；｜深圳 成都 重庆 贵阳 深汕合作区｜包含可迁移方向：营销；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 途牛旅游网｜全栈开发工程师 AI 应用开发工程师 旅游主播 订单核销 旅游产品 旅游定制师｜南京｜匹配 ，适合优先检查；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 菲利华｜研发类 质量类 营销类 机电类 职能类｜待确认｜包含可迁移方向：营销；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 申通快递｜业务类 市场类 职能类；｜上海 全国｜包含可迁移方向：市场；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 晶合集成｜研发技术类 量产技术类 生产运营类 信息技术类 职能支持类；｜合肥｜包含可迁移方向：运营；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 炎魂网络｜中台&技术类 策划类 市场&运营类 设计类 综合类｜待确认｜包含匹配方向：运营、市场、策划；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 九识智能｜产研类岗位 运营类岗位｜苏州 杭州 北京 济宁｜包含可迁移方向：运营；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 横竖横动画｜文化/传媒/旅游/影视/艺术/出版/广告营销｜待确认｜包含可迁移方向：营销；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 角色模型师 场景模型师 角色特效师 场景特效师 灯光合成师｜算法类 硬件类 软件类 产品类 管培生｜苏州｜包含匹配方向：管培、产品、管培生；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 美邦股份｜营销管培生 推广经理管培生 产品经理管培生；｜待确认｜匹配 产品经理、管培，适合优先检查；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 隔壁刘奶奶｜管培生岗位｜待确认｜包含匹配方向：管培、管培生；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 项目管理岗 运营管理岗 生活服务岗 人力岗 财务岗 总裁办综务岗 战略管理岗 招采管理岗 法务岗 科研岗｜算法类 软件开发类 硬件开发类 测试类 产品类 设计类 市场营销类 数据类 运营类 供应链类 综合职能类｜待确认｜匹配 市场营销、战略，适合优先检查；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 大参林｜J、营运类 商品类 新零售类 策略运营类 人力类 财务类；｜待确认｜包含匹配方向：新零售、运营；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 云圣智能｜算法类 研发类 产品类 设计类 营销类 职能类；｜)北京 天津 江苏 深圳 全国 海外｜包含匹配方向：产品、营销；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 和而泰｜商品类 品牌类 零售类 职能类；｜深圳 顺德 青岛 杭州 海外｜包含匹配方向：品牌；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 未岚大陆｜产品与研发类 营销类 中后台职能类｜北京 深圳 常州 德国 法国｜包含匹配方向：产品、营销；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 超星集团｜储备干部 产品经理 项目经理 产品运营 Java开发工程师 算法工程师 大客户代表｜燕郊 成都 北京 武汉 上海 成都 福州 南京 西安 郑州 全国｜匹配 产品运营、产品经理，适合优先检查；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 千岛｜#AI/研发类 产品类 运营类；｜待确认｜匹配 ，适合优先检查；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 精臣｜产品类 软件研发类 硬件研发类 供应链类 市场营销类 职能类｜待确认｜包含匹配方向：市场营销、产品、市场、营销；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 点众科技｜PAI漫剧 投放/素材 职能/支持 商务版权 信息流 运营 研发 产品｜全国 海外｜匹配 ，适合优先检查；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-- [ ] 途游游戏｜研发技术类 发行营销类 产品策划类 美术设计类 职能用户类；｜北京 上海 广州 深圳 长沙 武汉 成都 香港 新加坡｜包含匹配方向：产品、营销、策划；需回原表核对链接｜[投递链接](https://docs.qq.com/sheet/DQUNxdHRXcndkeHFK?tab=986nx3)
-
 ## 自动化运行记录
 
 - 2026-07-29：已建立初始清单。后续每天 09:30 追加新匹配岗位，并保留已勾选状态。
@@ -164,4 +126,3 @@
 - 2026-08-20：对比 2026-08-19 缓存后复核新增区块，网站新增 11 个匹配岗位，并将万兴科技更新为正式校招入口；当前种子岗位 425 个。
 - 2026-08-20：抓取 2027届校招信息汇总表 2720 行；新增优选池 0 个；当前种子岗位 425 个：高匹配 99、可投备选 131、低意向备查 195；Markdown 清单未勾选 55 个。
 - 2026-08-21：抓取 2027届校招信息汇总表 2770 行；新增优选池 21 个；当前种子岗位 446 个：高匹配 99、可投备选 150、低意向备查 197；Markdown 清单未勾选 74 个。
-- 2026-08-24：抓取 2027届校招信息汇总表 2897 行；新增优选池 38 个；当前种子岗位 484 个：高匹配 108、可投备选 176、低意向备查 200；Markdown 清单未勾选 109 个。

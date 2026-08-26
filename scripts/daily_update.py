@@ -33,6 +33,7 @@ OUTPUT_DIR = PROJECT_DIR / "outputs"
 WORK_DIR = PROJECT_DIR / "work"
 LOG_DIR = PROJECT_DIR / "logs"
 JOB_TRACKER = OUTPUT_DIR / "job_tracker.html"
+DAILY_WORKBENCH = OUTPUT_DIR / "daily_application_workbench.html"
 RECOMMENDED = OUTPUT_DIR / "recommended_jobs.md"
 CHANGELOG = PROJECT_DIR / "CHANGELOG.md"
 
@@ -736,11 +737,26 @@ def validate_tracker() -> None:
     print(result.stdout, end="")
 
 
+def build_and_validate_workbench() -> None:
+    result = run(["node", "scripts/build_daily_workbench.mjs"], check=True)
+    print(result.stdout, end="")
+    code = (
+        "const fs=require('fs');"
+        "const html=fs.readFileSync('outputs/daily_application_workbench.html','utf8');"
+        "const start=html.indexOf('<script>')+8;"
+        "const js=html.slice(start, html.indexOf('</script>', start));"
+        "new Function(js);"
+        "console.log('daily_application_workbench.html script parse OK');"
+    )
+    result = run(["node", "-e", code], check=True)
+    print(result.stdout, end="")
+
+
 def git_commit_and_push(no_git: bool) -> None:
     if no_git:
         log("skip git because --no-git was set")
         return
-    run(["git", "add", "outputs/job_tracker.html", "outputs/recommended_jobs.md", "CHANGELOG.md"], check=True)
+    run(["git", "add", "outputs/job_tracker.html", "outputs/daily_application_workbench.html", "outputs/recommended_jobs.md", "CHANGELOG.md"], check=True)
     status = run(["git", "status", "--short"], check=True).stdout.strip()
     if not status:
         log("no changes to commit")
@@ -805,6 +821,7 @@ def main() -> int:
     update_changelog(len(added), dry_run=args.dry_run)
     if not args.dry_run:
         validate_tracker()
+        build_and_validate_workbench()
         git_commit_and_push(no_git=args.no_git)
     log("daily update finished")
     return 0
